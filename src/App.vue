@@ -38,12 +38,11 @@ function handleCheckuncompleted(index) {
 }
 function handleCheckcompleted(index) {
   isChecked.value = completeTasks.value[index].isChecked.value
-  completeTasks.value[index].isChecked = !isChecked.value
+  completeTasks.value[index].isChecked = isChecked.value
   console.log(completeTasks.value[index].isChecked);
   isChecked.value= null
 }
 function addToCompletedList(index) {
-  
     completeTasks.value.push({
       text: incompleteTasks.value[index].text,
       isChecked: incompleteTasks.value[index].isChecked,
@@ -143,7 +142,6 @@ function editTask(index) {
               type="text"
             />{{ newTask.text }}
           </p>
-          <button @click="editTask(index)" class="edit">Edit</button>
           <button @click="deleteTaskCompleted(index, task.isChecked)" class="delete">
             Delete
           </button>
