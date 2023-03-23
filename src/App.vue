@@ -8,7 +8,8 @@ const completeTasks = ref([]);
 const editable = ref(false);
 const showModal = ref(false);
 const editIndex = ref(null);
-const isChecked = ref(false);
+const isChecked = ref(null)
+
 
 const addTasks = () => {
   if (newTask.value.length <= 9) {
@@ -29,10 +30,17 @@ const addTasks = () => {
     }
   }
 };
-function handleCheck(index) {
-  incompleteTasks.value[index].isChecked = !isChecked.value;
-  isChecked.value = !isChecked.value;
+function handleCheckuncompleted(index) {
+  isChecked.value = incompleteTasks.value[index].isChecked.value
+  incompleteTasks.value[index].isChecked = !isChecked.value
   console.log(incompleteTasks.value[index].isChecked);
+  isChecked.value= null
+}
+function handleCheckcompleted(index) {
+  isChecked.value = completeTasks.value[index].isChecked.value
+  completeTasks.value[index].isChecked = !isChecked.value
+  console.log(completeTasks.value[index].isChecked);
+  isChecked.value= null
 }
 function addToCompletedList(index) {
   
@@ -49,8 +57,11 @@ function addToUncompletedList(index){
     });
     completeTasks.value.splice(index, 1);
 }
-function deleteTask(index) {
+function deleteTaskUncompleted(index) {
   incompleteTasks.value.splice(index, 1);
+}
+function deleteTaskCompleted(index) {
+  completeTasks.value.splice(index, 1);
 }
 function editTask(index) {
   showModal.value = true;
@@ -93,7 +104,7 @@ function editTask(index) {
           <input
             type="checkbox"
             v-model="task.isChecked"
-            @change="handleCheck(index), addToCompletedList(index)"
+            @change="handleCheckuncompleted(index), addToCompletedList(index)"
             :checked="task.isChecked"
           />
           <label v-if="editable != true">{{ task.text }}</label>
@@ -106,7 +117,7 @@ function editTask(index) {
             />{{ newTask.text }}
           </p>
           <button @click="editTask(index)" class="edit">Edit</button>
-          <button @click="deleteTask(index)" class="delete">Delete</button>
+          <button @click="deleteTaskUncompleted(index)" class="delete">Delete</button>
         </li>
       </ul>
 
@@ -120,7 +131,7 @@ function editTask(index) {
           <input
             type="checkbox"
             v-model="task.isChecked"
-            @change="handleCheck(index), addToUncompletedList(index)"
+            @change="handleCheckcompleted(index), addToUncompletedList(index)"
             :checked="task.isChecked"
           />
           <label v-if="editable != true">{{ task.text }}</label>
@@ -133,7 +144,7 @@ function editTask(index) {
             />{{ newTask.text }}
           </p>
           <button @click="editTask(index)" class="edit">Edit</button>
-          <button @click="deleteTask(index, task.isChecked)" class="delete">
+          <button @click="deleteTaskCompleted(index, task.isChecked)" class="delete">
             Delete
           </button>
         </li>
